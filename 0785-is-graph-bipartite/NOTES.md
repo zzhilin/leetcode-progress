@@ -1,1 +1,1 @@
-​
+The problem is missing one specific information that the input can produce disconnected multiple graphs, which should be a huge point. I could not figure out why my answer was marked wrong until I looked up the solution.​
