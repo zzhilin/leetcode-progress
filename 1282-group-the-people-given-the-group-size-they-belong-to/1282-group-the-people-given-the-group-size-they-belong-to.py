@@ -3,14 +3,11 @@ class Solution:
         # O(N)
         # dict size - person\
         assignments = defaultdict(list)
+
+        res = []
         for i in range(len(groupSizes)):
             assignments[groupSizes[i]].append(i)
-        res = []
-        for size, people in assignments.items():
-            if size == len(people):
-                res.append(people)
-                continue
-
-            for i in range(0,len(people),size):
-                res.append(people[i:i+size])
+            if len(assignments[groupSizes[i]]) == groupSizes[i]:
+                res.append(assignments[groupSizes[i]])
+                assignments[groupSizes[i]] = []
         return res
