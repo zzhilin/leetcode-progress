@@ -3,8 +3,8 @@ class Solution:
         """
         check no cycles and is connected
         dfs or bfs - bfs
-        time: V*E
-        space: (V)
+        time: V+E
+        space: (V+E)
         """
         visited = set()
         q = deque([0]) #cnt = 0
