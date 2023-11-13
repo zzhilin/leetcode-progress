@@ -1,7 +1,8 @@
 class Solution:
     def letterCombinations(self, digits: str) -> List[str]:
         """
-        2^n
+        general time complexity: number of children of each node ^ height of the state tree.
+        time: 4(max possible children)^N(digits len) * N
         n
         """
         if not digits:
