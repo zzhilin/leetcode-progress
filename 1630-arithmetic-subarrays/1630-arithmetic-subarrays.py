@@ -1,32 +1,33 @@
 class Solution:
     def checkArithmeticSubarrays(self, nums: List[int], l: List[int], r: List[int]) -> List[bool]:
-        """
-        nums[4,6,5,9,3,7]
-        l[0,0,2]
-        r[2,3,5]
+        # diff = (max in arr - min in arr) / (n - 1)
+        # we have n - 1 iteration between min and max, each increase by diff if it's arithmetic. total increased with diff * (n-1)
+        # if diff is not an integer, than it's not arithmetic
+        # if it is, min + diff must be in arr, every min + k * diff less than max is in arr.
+        # if all are in arr, than it is arithmetic
+        # convert arr to set for O(1) checks
         
-        0th [0,2] -> [4,6,5] [6,5,4]
-        1th [0,3] -> [4,6,5,9]
-        2th [2,5] -> [5,9,3,7]
-        """
-        # bf n^2
-        # Function that checks if an arr is arithmetic
-            # calc diff between first and second element
-            # iterate over arr from 2nd element and compare diff
-            # if different, return false
-        def is_arithmetic(nums):
-            diff = nums[1] - nums[0]
-            for i in range(1, len(nums)):
-                if nums[i] - nums[i-1] != diff:
-                    return False
-            return True
+        def check(nums):
             
-        # for range in l,r, get section of nums, sort, compare
+            minimum = min(nums)
+            maximum = max(nums)
+            diff = (maximum-minimum) / (len(nums)-1)
+            num_set = set(nums)
+            if (maximum-minimum) % (len(nums)-1) != 0:
+                return False
+            curr = minimum + diff
+            while curr < maximum:
+                if curr not in num_set:
+                    return False
+                curr += diff
+            return True
         res = []
-        for i, j in zip(l, r):
-            # print(i,j)
-            curr = sorted(nums[i:j+1], reverse=True)
-            res.append(is_arithmetic(curr))
+        for i in range(len(l)):
+            curr = nums[l[i]:r[i]+1]
+            res.append(check(curr))
         return res
             
+                
+                
             
+                
