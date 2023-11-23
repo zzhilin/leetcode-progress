@@ -1,13 +1,29 @@
 class Solution:
     def lengthOfLIS(self, nums: List[int]) -> int:
-        dp = [1] * len(nums)
-
-        for i in range(1, len(nums)):
-            # compare nums[i] with each previous element nums[j] 
-            for j in range(i):
-            # If nums[i] is greater than nums[j]
-                if nums[i] > nums[j] and dp[i] <= dp[j]:
-                # check if we can increase subsequence at dp[i] to dp[j]+1
-                    dp[i] = dp[j]+1
-        return max(dp)
+        def binary_search(nums, num):
+            n = len(nums)
+            l, r = 0, n
+            while l < r:
+                mid = (l+r) // 2
+                if nums[mid] < num:
+                    l = mid+1
+                else:
+                    r = mid
+            return l
+        
+        
+        # build subsequence
+        sub = []
+        # if curr num is greater than prev num, add to sub
+        for i in range(len(nums)):
+            # print(sub)
+            if len(sub) == 0 or nums[i] > sub[-1]:
+                sub.append(nums[i])
+        # if curr num is less than prev num, find smallest num in sub that >= curr num, replace
+            else:
+                pos = binary_search(sub, nums[i])
+                sub[pos] = nums[i]
+                
+        # LIS is len(sub)
+        return len(sub)
             
