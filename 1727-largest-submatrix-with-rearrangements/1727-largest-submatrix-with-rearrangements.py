@@ -3,21 +3,18 @@ class Solution:
         # find consecutive ones in each column
         n = len(matrix[0]) # cols
         m= len(matrix)
+        prev_row = [0] * n
         res = 0
 
-        for i in range(n):
-            consecutive_ones = 0
-            for row in range(m):
-                if matrix[row][i] == 0:
-                    consecutive_ones = 0
-                    continue
-                consecutive_ones += matrix[row][i]
-                matrix[row][i] = consecutive_ones
+        for row in range(m):
+            curr_row = matrix[row][:]
+            for col in range(n):
+                if curr_row[col] != 0:
+                    curr_row[col] += prev_row[col]
+            sorted_row = sorted(curr_row, reverse=True)
+            for i in range(len(sorted_row)):
+                res = max(res, sorted_row[i] * (i+1))
+            prev_row = curr_row
         # sort in non decreasing order
-        for row in matrix:
-            row.sort(reverse=True)
-            for i in range(len(row)):
-                area = row[i] *(i+1)
-                res = max(res, area)
-        
+
         return res
