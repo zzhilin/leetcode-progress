@@ -1,30 +1,26 @@
-from heapq import heappop, heappush, heapify
-
 class Solution:
     def totalCost(self, costs: List[int], k: int, candidates: int) -> int:
-        head_workers = costs[:candidates]
-        tail_workers = costs[max(candidates, len(costs) - candidates):]
-        heapify(head_workers)
-        heapify(tail_workers)
         
-        answer = 0
-        next_head, next_tail = candidates, len(costs) - 1 - candidates 
+        res =0
+        
+        first = costs[:candidates]
+        last = costs[max(len(costs)-candidates, candidates):]
 
-        for _ in range(k): 
-            if not tail_workers or head_workers and head_workers[0] <= tail_workers[0]: 
-                answer += heappop(head_workers)
-
-                # Only refill the queue if there are workers outside the two queues.
-                if next_head <= next_tail: 
-                    heappush(head_workers, costs[next_head])
-                    next_head += 1
-            else: 
-                answer += heappop(tail_workers)
-
-                # Only refill the queue if there are workers outside the two queues.
-                if next_head <= next_tail:  
-                    heappush(tail_workers, costs[next_tail])
-                    next_tail -= 1
-                    
-        return answer
-# Remember to import List from typing if needed.
+        heapq.heapify(first)
+        heapq.heapify(last)
+        
+        i=candidates
+        j=len(costs)-candidates-1
+        
+        for curr in range(k):
+            if not last or first and first[0] <= last[0]:
+                res += heappop(first)
+                if i<=j:
+                    heappush(first,costs[i])
+                    i+=1
+            else:
+                res += heappop(last)
+                if i<=j:
+                    heappush(last,costs[j])
+                    j-=1
+        return res
