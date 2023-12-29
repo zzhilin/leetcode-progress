@@ -1,26 +1,19 @@
 class Solution:
     def numOfArrays(self, n: int, m: int, k: int) -> int:
-        
-        def dp(ind, max_so_far, remain_cnt):
-            #base
-            if ind == n:
-                if remain_cnt == 0:
-                    return 1
-                return 0
-            if remain_cnt < 0:
-                return 0
-            if memo[ind][max_so_far][remain_cnt] != -1:
-                return memo[ind][max_so_far][remain_cnt]
-            
-            res = 0
-            # fill 0 to k-1 elements (1,max)
-            for num in range(1, max_so_far+1):
-                res = (res + dp(ind+1, max_so_far, remain_cnt)) % MOD
-            # max+1, m
-            for num in range(max_so_far+1, m+1):
-                res = (res + dp(ind+1, num, remain_cnt-1)) % MOD
-            memo[ind][max_so_far][remain_cnt] = res
-            return res
+
         MOD = 10 ** 9 + 7
-        memo = [[[-1 for _ in range(k+1)] for j in range(m+1)] for _ in range(n)]
-        return dp(0,0,k)
+        dp = [[[0 for _ in range(k+1)] for j in range(m+1)] for _ in range(n+1)]
+        
+        for num in range(len(dp[0])):
+            dp[n][num][0] = 1
+        
+        for i in range(n-1, -1, -1):
+            for max_so_far in range(m, -1, -1):
+                for remain in range(k+1):
+                    res = (max_so_far * dp[i+1][max_so_far][remain]) % MOD
+                    if remain > 0:
+                        for x in range(max_so_far+1, m+1):
+                            res = (res + dp[i+1][x][remain-1]) % MOD
+                    dp[i][max_so_far][remain] = res
+                    
+        return dp[0][0][k]
