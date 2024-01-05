@@ -2,6 +2,7 @@ class Solution:
     def maxValue(self, events: List[List[int]], k: int) -> int:
         events.sort()
         n = len(events)
+        starts = [start for start, end, val in events]
         # we initialize dp arr for number of events left to attend, and current event index
         dp = [[-1] * n for _ in range(k+1)]
         def find_max_val(curr, cnt):
@@ -13,12 +14,9 @@ class Solution:
                 return 0
             if dp[cnt][curr] != -1:
                 return dp[cnt][curr]
-            idx = curr+1 # nxt
-            # find nxt event that is closest to curr
-            for _ in range(curr+1, n):
-                if events[idx][0] > events[curr][1]:
-                    break
-                idx += 1
+            # nxt
+            # find nxt event that is closest to curr with binary search
+            idx = bisect_right(starts, events[curr][1])
             # attend curr meeting, nex meeting is i, used k by one
             # don't attend current meeting
             res = max(find_max_val(idx, cnt-1) + events[curr][2], find_max_val(curr + 1, cnt))
