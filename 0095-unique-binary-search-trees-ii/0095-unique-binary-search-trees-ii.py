@@ -6,11 +6,8 @@
 #         self.right = right
 class Solution:
     def generateTrees(self, n: int) -> List[Optional[TreeNode]]:
-
-        # build takes start index, end idx
         def build(start, end, memo):
-            res = [] # possible root
-            # base
+            res = [] # all nodes root
             if start > end:
                 res.append(None)
                 return res
@@ -25,11 +22,11 @@ class Solution:
                     for r in right:
                         root = TreeNode(i, l, r)
                         res.append(root)
+                
             memo[(start,end)] = res
             return res
                 
-                
-            
+        
         memo = {}
-        build(1,n,memo)
+        build(1, n, memo)
         return memo[(1,n)]
