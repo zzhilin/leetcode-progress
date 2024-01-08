@@ -6,37 +6,31 @@ class Solution:
         m = len(board)
         n = len(board[0])
         
-        # markall O that are on the border or adjacent to a 'O' cannot be flipped as 'E'
         def bfs(i,j):
-            
             q = collections.deque([(i,j)])
-            
-            
-            while len(q) > 0:
-                i,j = q.popleft()
-                if board[i][j] != 'O':
-                    continue
-                board[i][j] = 'E'
-                for dx, dy in [(0,1),(0,-1),(1,0),(-1,0)]:
-                    nx, ny = i+dx, j+dy
+            board[i][j] = '#'
+            while q:
+                row, col = q.popleft()
+                # check 4 directions
+                for dx, dy in [(1,0),(-1,0),(0,1),(0,-1)]:
+                    nx,ny = row+dx, col+dy
                     if 0 <= nx < m and 0 <= ny < n and board[nx][ny] == 'O':
                         q.append((nx,ny))
-                        # board[nx][ny] = 'E'
-                    
-                    
-                
-        # start bfs from border 'O' to find all escaped ones
+                        board[nx][ny] = '#'
+        
+        # check escaping Os
+        # as these Os are not flippable, we need to find all connected Os using bfs
         for i in range(m):
-            bfs(i, 0)
-            bfs(i, n-1)
-        for j in range(n):
-            bfs(0, j)
-            bfs(m-1, j)
-            
+            for j in range(n):
+                if i == 0 or i == m-1 or j == 0 or j == n-1:
+                    if board[i][j] == 'O':
+                        bfs(i,j)
+                    
+        
         # mark flippable cells
         for i in range(m):
             for j in range(n):
                 if board[i][j] == 'O':
                     board[i][j] = 'X'
-                elif board[i][j] == 'E':
+                elif board[i][j] == '#':
                     board[i][j] = 'O'
