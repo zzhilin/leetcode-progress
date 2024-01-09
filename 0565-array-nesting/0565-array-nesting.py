@@ -1,28 +1,22 @@
 class Solution:
     def arrayNesting(self, nums: List[int]) -> int:
-        # input is nums arr of range 0, n-1
         
-        max_len = float("-inf")
-        INF = float("inf")
-        # dp(visited) returns curr length of set s[k]
-        # base case we have visited number, return and update max len
-        # start from 0 to n-1, build our set and mark visited
+        res = float("-inf")
         
+        # go over all numbers
         for i in range(len(nums)):
-            
-            
-            # if curr == INF:
-            #     max_len = max(max_len, length)
-            #     continue
-            # mark as visited
-            if nums[i] != INF:
-                
-                curr = nums[i]
+            # not visited
+            if nums[i] != float("inf"):
                 length = 0
-                while nums[curr] != INF:
-                    tmp = curr
+                curr = nums[i]
+                # no dup in set yet
+                while nums[curr] != float("inf"):
+                    val = curr
+                    # update next index
                     curr = nums[curr]
+                    # set current index to visited
+                    nums[val] = float("inf")
+                    # update count
                     length += 1
-                    nums[tmp] = INF
-                max_len = max(length, max_len)
-        return max_len
+                res = max(res, length)
+        return res
