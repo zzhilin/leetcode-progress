@@ -13,13 +13,10 @@ class Solution:
         def traverse(node1, node2):
             if not node1 or not node2:
                 return
-            # for each node, connect left and right
-            node1.next = node2
-           
-            # connect children of same parent
+            node1.next=node2
+            # connect child nodes
             traverse(node1.left, node1.right)
             traverse(node2.left, node2.right)
-            # diff
             traverse(node1.right, node2.left)
             
             
@@ -27,8 +24,7 @@ class Solution:
             return None
         traverse(root.left, root.right)
         return root
-    
-    
+        
         
             
             
