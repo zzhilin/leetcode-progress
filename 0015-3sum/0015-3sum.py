@@ -1,33 +1,33 @@
 class Solution:
     def threeSum(self, nums: List[int]) -> List[List[int]]:
-        '''
-        approach
-        sort
-        fix 1 number using for loop
-        two pointers for the numbers
-        '''
-        
-        def two_sum(nums,target,first):
-            i = 0
-            j = len(nums)-1
-            
-            while i < j:
-                total = first + nums[i] + nums[j]
-                if total > target:
-                    j -= 1
-                elif total < target:
-                    i += 1
-                elif total == target:
-                    res.append([first, nums[i], nums[j]])
-                    i += 1
-                    j-=1
-                    while i < j and nums[i] == nums[i-1]:
-                        i += 1
-                        
+        nums.sort() # to use oppo ptrs
+        # opposite direction
         res = []
-        nums.sort()
-        for i in range(len(nums)):
-            curr = nums[i]
-            if i == 0 or nums[i-1] != nums[i]:
-                two_sum(nums[i+1:],0,curr)
+        n = len(nums)
+        # keep i, find nums[j]+nums[k] = -nums[i]
+        for i in range(n-2):
+            # if we encounter same number in nums (we cannot have dup triplets)
+            # continue
+            # not first num and curr equal to last number
+            if i > 0 and nums[i-1] == nums[i]:
+                continue
+            j, k = i+1, n-1
+            while j < k:
+                s = nums[i] + nums[j] + nums[k]
+                if s > 0:
+                    k -= 1
+
+                elif s < 0:
+                    j += 1
+                else:
+                    r = [nums[i], nums[j], nums[k]]
+                    res.append(r)
+                    # remove dup j and k
+                    j += 1
+                    while j < k and nums[j] == nums[j-1]:
+                        j += 1
+                    k -= 1
+                    while j < k and nums[k] == nums[k+1]:
+                        k -= 1
         return res
+	
